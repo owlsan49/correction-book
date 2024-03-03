@@ -7,3 +7,11 @@ export function PushWords(updateData){
         data: updateData
     })
 }
+
+export function PopWords(updateParams){
+    return service.request({
+        method: "get",
+        url: "/pop_words",
+        params: updateParams
+    })
+}

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { RouterView } from 'vue-router';
+// import { RouterView } from 'vue-router';
 
 const activeIndex = ref('1')
 const activeRouter = ref(true)
@@ -15,7 +15,7 @@ const handleSelect = (key: string, keyPath: string[]) => {
         <el-menu-item index="/review">Review</el-menu-item>
     </el-menu>
     <br/>
-    <RouterView />
+    <!-- <RouterView /> -->
 </template>
 
 <style scoped></style>

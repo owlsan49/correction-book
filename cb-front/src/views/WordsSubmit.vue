@@ -13,6 +13,7 @@ const onSubmit = () => {
     PushWords(form)
         .then(response => {
             console.log('success')
+            alert('success!')
         }).catch(error => {
             console.log('error')
         })
@@ -32,7 +33,7 @@ const onSubmit = () => {
 
 <style>
 .el-textarea__inner {
-  height: 600px;
+  height: 400px;
 }
 
 body {
