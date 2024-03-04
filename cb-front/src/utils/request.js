@@ -1,11 +1,12 @@
 import axios from "axios";
+import cfg from "../../../config.json"
 
 // console.log("in request.js", process.env.NODE_ENV);
 
 // console.log("in request.js", process.env.VUE_APP_URL);
 
 // axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? '' : '/api';  //关键代码
-const port = 5002
+const port = cfg.port
 const BASEURL = `http://127.0.0.1:${port}/`;
 // console.log("in request.js: BASEURL = ", BASEURL);
 
