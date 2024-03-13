@@ -47,13 +47,27 @@ def update_words(cb_recorder: dict, words: list):
         cb_recorder["src_data"][formatted_datetime].extend(words)
     else:
         write_json(data_bk_path, cb_recorder)
-        cb_recorder["tptr"] = (cb_recorder["tptr"] + 1) % cb_recorder["max_len"]
         cb_recorder["src_data"][formatted_datetime] = words
 
     cb_recorder["total_list"].extend(words)
     for rp in repeat_point:
         pos = (cb_recorder["tptr"] + rp) % cb_recorder["max_len"]
         insect_queue(cb_recorder["pop_queue"], pos, words)
+    write_json(data_path, cb_recorder)
+
+    return info
+
+
+def update_add_words(cb_recorder: dict, add_words: list):
+    info = {}
+    tmp_tptr = cb_recorder["tptr"]
+    print(add_words)
+    if cb_recorder["pop_queue"][tmp_tptr] == 0:
+        cb_recorder["pop_queue"][tmp_tptr] = add_words
+    else:
+        for w in add_words:
+            if isinstance(cb_recorder["pop_queue"][tmp_tptr], list) and (w not in cb_recorder["pop_queue"][tmp_tptr]):
+                cb_recorder["pop_queue"][tmp_tptr].append(w)
     write_json(data_path, cb_recorder)
 
     return info
@@ -72,7 +86,7 @@ def prepare_words(total_list, words: str):
     formatted_words = []
     for i, w in enumerate(words):
         if w not in total_list:
-            formatted_words.append(w.lower())
+            formatted_words.append(w)
         else:
             print(f'<{w}> is filtered causing repetition')
     return formatted_words
@@ -97,9 +111,15 @@ def get_words(cb_recorder: dict, length=50, shuffle=True):
         words = copy.deepcopy(words_source[:length])
         del words_source[:length]
     if shuffle:
+        words.append(get_random_number())
         random.shuffle(words)
     write_json(data_path, cb_recorder)
     return words
+
+
+def get_random_number(num=5, range=(0, 999)):
+    rand_list = [random.randint(range[0], range[1]) for _ in range(num)]
+    return rand_list
 
 
 cb_recorder = read_json(data_path)

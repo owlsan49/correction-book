@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, toRef, onBeforeUnmount, onMounted } from 'vue'
-import { PopWords } from '@/apis/read.js'
+import { PopWords, PushAddWords } from '@/apis/read.js'
 let audioSource = ref('https://sensearch.baidu.com/gettts?lan=uk&spd=3&source=alading&text=')
 let words = ref([])
+let aWords = ref([])
 let wordLength = ref(0)
 let info = ref("")
 let barPercentage = ref(0.0)
@@ -16,9 +17,16 @@ const gap = 3
 
 function addIndex() {
     if (label.value == 2) {
+        if (currentIndex.value + 1 == words.value.length) {
+            PushAddWords({'add_words': aWords.value})
+        }
         currentIndex.value = (currentIndex.value + 1) % words.value.length
     }
     label.value = (label.value + 1) % gap
+}
+
+function addWords() {
+    aWords.value.push(currentString.value)
 }
 
 function getWords() {
@@ -80,8 +88,10 @@ onMounted(() => {
         </div>
         <audio ref="audioRef" :src="currentAudio" @canplay="() => { togglePlay() }"></audio>
         <el-button @click="togglePlay" class="el-icon-play">play</el-button>
+        <el-button type="success" @click="addWords">add</el-button>
         <p v-if="label == 1">{{ currentString }}</p>
         <el-input v-model="input_box" placeholder="Please input" />
+        <p v-if="aWords.length">{{ aWords }}</p>
     </div>
 </template>
 

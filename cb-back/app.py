@@ -9,7 +9,8 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from utils import (read_json, cb_recorder, update_words,
-                   prepare_words, get_words)
+                   prepare_words, get_words, update_add_words,
+                   get_random_number)
 
 app = Flask(__name__)
 CORS(app)
@@ -21,6 +22,15 @@ def push_words():
     words = request.get_json()['desc']
     words = prepare_words(cb_recorder["total_list"], words)
     info = update_words(cb_recorder, words)
+    results.update(info)
+    return jsonify(results)
+
+
+@app.route('/push_add_words', methods=['POST'])
+def push_add_words():
+    results = {'resCode': 0}
+    add_words = request.get_json()['add_words']
+    info = update_add_words(cb_recorder, add_words)
     results.update(info)
     return jsonify(results)
 
