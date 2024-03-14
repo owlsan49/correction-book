@@ -83,12 +83,7 @@ def insect_queue(pop_queue, pos, words):
 def prepare_words(total_list, words: str):
     words = words.replace("\n", "  ")
     words = re.split(r' {2,}', words)
-    formatted_words = []
-    for i, w in enumerate(words):
-        if w not in total_list:
-            formatted_words.append(w)
-        else:
-            print(f'<{w}> is filtered causing repetition')
+    formatted_words = remove_repetitions(total_list, words)
     return formatted_words
 
 
@@ -111,14 +106,24 @@ def get_words(cb_recorder: dict, length=50, shuffle=True):
         words = copy.deepcopy(words_source[:length])
         del words_source[:length]
     if shuffle:
-        words.append(get_random_number())
+        words.extend(get_random_number())
         random.shuffle(words)
     write_json(data_path, cb_recorder)
     return words
 
 
-def get_random_number(num=5, range=(0, 999)):
-    rand_list = [random.randint(range[0], range[1]) for _ in range(num)]
+def remove_repetitions(total_list, words):
+    res_words = []
+    for i, w in enumerate(words):
+        if w not in total_list:
+            res_words.append(w)
+        else:
+            print(f'<{w}> is filtered causing repetition')
+    return res_words
+
+
+def get_random_number(num=5, ranges=(0, 999)):
+    rand_list = [random.randint(ranges[0], ranges[1]) for _ in range(num)]
     return rand_list
 
 

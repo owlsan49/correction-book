@@ -10,7 +10,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from utils import (read_json, cb_recorder, update_words,
                    prepare_words, get_words, update_add_words,
-                   get_random_number)
+                   remove_repetitions)
 
 app = Flask(__name__)
 CORS(app)
@@ -30,6 +30,8 @@ def push_words():
 def push_add_words():
     results = {'resCode': 0}
     add_words = request.get_json()['add_words']
+    next_day_idx = cb_recorder["tptr"]
+    add_words = remove_repetitions(cb_recorder["pop_queue"][next_day_idx], add_words)
     info = update_add_words(cb_recorder, add_words)
     results.update(info)
     return jsonify(results)
