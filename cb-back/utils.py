@@ -75,7 +75,8 @@ def update_add_words(cb_recorder: dict, add_words: list):
 
 def insect_queue(pop_queue, pos, words):
     if isinstance(pop_queue[pos], list):
-        pop_queue[pos].extend(words)
+        print(pos)
+        pop_queue[pos].extend(remove_repetitions(pop_queue[pos], words))
     else:
         pop_queue[pos] = words
 
@@ -83,6 +84,8 @@ def insect_queue(pop_queue, pos, words):
 def prepare_words(total_list, words: str):
     words = words.replace("\n", "  ")
     words = re.split(r' {2,}', words)
+    if "" in words:
+        words.remove("")
     formatted_words = remove_repetitions(total_list, words)
     return formatted_words
 
@@ -106,7 +109,8 @@ def get_words(cb_recorder: dict, length=50, shuffle=True):
         words = copy.deepcopy(words_source[:length])
         del words_source[:length]
     if shuffle:
-        words.extend(get_random_number())
+        # words.extend(get_random_number())
+        words = words * 2
         random.shuffle(words)
     write_json(data_path, cb_recorder)
     return words
@@ -114,11 +118,14 @@ def get_words(cb_recorder: dict, length=50, shuffle=True):
 
 def remove_repetitions(total_list, words):
     res_words = []
-    for i, w in enumerate(words):
-        if w not in total_list:
-            res_words.append(w)
-        else:
-            print(f'<{w}> is filtered causing repetition')
+    if isinstance(total_list, int):
+        res_words.extend(words)
+    else:
+        for i, w in enumerate(words):
+            if w not in total_list:
+                res_words.append(w)
+            else:
+                print(f'<{w}> is filtered causing repetition')
     return res_words
 
 

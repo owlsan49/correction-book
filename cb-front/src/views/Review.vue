@@ -58,6 +58,15 @@ function handleKeydown(event: any) {
             togglePlay()
         }
     }
+
+    if (event.key === '2') {
+        console.log('press 1')
+        aWords.value.push(currentString.value)
+    }
+    if (event.key === '1') {
+        console.log('press 2')
+        togglePlay()
+    }
 }
 
 function togglePlay() {

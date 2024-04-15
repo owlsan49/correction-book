@@ -14,6 +14,7 @@ const onSubmit = () => {
         .then(response => {
             console.log('success')
             alert('success!')
+            form.desc = ''
         }).catch(error => {
             console.log('error')
         })

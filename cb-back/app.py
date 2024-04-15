@@ -20,9 +20,12 @@ CORS(app)
 def push_words():
     results = {'resCode': 0}
     words = request.get_json()['desc']
+    print(words)
     words = prepare_words(cb_recorder["total_list"], words)
-    info = update_words(cb_recorder, words)
-    results.update(info)
+    print(f"submitted words: {words}")
+    if len(words) > 0:
+        info = update_words(cb_recorder, words)
+        results.update(info)
     return jsonify(results)
 
 
@@ -47,6 +50,7 @@ def pop_words():
     else:
         results['info'] = ""
     return jsonify(results)
+
 
 
 if __name__ == '__main__':
